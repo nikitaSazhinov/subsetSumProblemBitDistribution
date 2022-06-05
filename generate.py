@@ -3,6 +3,7 @@ from re import template
 from typing import Set
 from algorithms import karmarkarKarp
 from algorithms import greedyPartition
+# from tree import Node
     
 def randomBits(word_size):
     number = 0
@@ -46,13 +47,29 @@ def generateTemplatesInstance():
     return instances
 
 
+def generateData():
 
+    S_3 = []
+    S_2 = []
+    S_1 = []
+    S_0 = []
+    S_N1 = []
+    S_N2 = []
+    S_N3 = []
 
-for i in range(0, 1):
-   templateInstance = generateTemplatesInstance()
+    for i in range(0, 20):
+        templateInstance = generateTemplatesInstance()
+        S_3.append(templateInstance[0])
+        S_2.append(templateInstance[1])
+        S_1.append(templateInstance[2])
+        S_0.append(templateInstance[3])
+        S_N1.append(templateInstance[4])
+        S_N2.append(templateInstance[5])
+        S_N3.append(templateInstance[6])
 
-   print(templateInstance[6])
-   print(templateInstance[2])
+    return S_3, S_2, S_1, S_0, S_N1, S_N2, S_N3
+    #print(templateInstance[6])
+    #print(templateInstance[5])
 
-   print("Greedy: ", greedyPartition(templateInstance[6]))
-   print("Greedy: ", greedyPartition(templateInstance[3]))
+    #print("Greedy: ", greedyPartition(templateInstance[6]))
+    #print("Greedy: ", greedyPartition(templateInstance[5]))
