@@ -1,4 +1,7 @@
 import copy
+from ctypes import c_int16
+from os import curdir
+from select import select
 import sys
 
 class Node:
@@ -26,43 +29,63 @@ class Node:
         self.left.construct(counter,arr)
         self.right.construct(counter, arr)
         
+
+    def newDepthFirst(self, root, target, current):
+        print("")
+
     def depthFirst(self, root, target):
+        if not root: return
+        if root.left == None or root.right == None: return #hmmm...
         
-        # Count the recursions
         global recursions
         global flag
 
-        if root:
-            # found = sum(root.data) == target
-            # if found: return root.data
-            #print("Current: ", root.data)
-            # If subset sum is equal to target we found the subset
-            if (sum(root.data) == target):
-                #recursions += 1
-                #print("Found subset: ", root.data)
-                #print("Sum: ", sum(root.data))
-                flag = True
-                return root.data
-                
-            elif (sum(root.data) > target):
-                #print("Pruining")
-                return
-            elif ((sum(root.data) < target) & (flag == False)):
-                recursions += 1
-                 # Recursively search left subtree
-                self.depthFirst(root.left, target)
+        # Count the recursions
+        recursions += 1
 
-                # Recursively search right subtree
+        # If subset sum is equal to target we found the subset
+        if (sum(root.data) == target):
+            flag = True
+            return root.data
+
+        # #Skip branch if sum higher than target
+        if ((sum(root.data) > target)  & (flag == False)):
+            return
+
+        # DFS
+        if ((root.left is not None) & (root.right is not None)):
+            if ((sum(root.data) < target) & (flag == False)):
+                self.depthFirst(root.left, target)
                 self.depthFirst(root.right, target)
-           
-            # Skip branch if sum higher than target
-            # if (sum(root.data) > target):
-            #     print("Prune")
-            #     return
+
+
+   
+    # def bAndB_stack(self, root):
+    #     # print("root data", root.data)
+    #     stack = []
+
+    #     def addToStack(root):
+    #         if (root.left == None or root.right == None):
+    #             return
             
-            
+    #         stack.append(root.data)
+    #         addToStack(root.left)
+    #         addToStack(root.right)
+    #     addToStack(root)
+    #     return stack
+    #     # print(stack)
     
-           
+    # def BBForReal(self, root, target):
+    #     best = 9999999999999
+    #     stack = []
+    #     stack.append(root.data)
+
+    #     while (stack is not []):
+    #         cur = stack.pop()
+    #         if (sum(cur) < best)
+     
+        
+      
 
 def runBB(arr):
     root = Node([])
@@ -71,10 +94,19 @@ def runBB(arr):
 
     global flag
     global recursions
+    # global current
+    # current = 0
+    # best = 99999999999
+
     recursions = 0
     flag =False
 
+    
+    # s = root.bAndB_stack(root)
+    
+
     root.depthFirst(root, target)
+
     #print("Solution: ", root.depthFirst(root,target))
     #print(recursions)
     return recursions

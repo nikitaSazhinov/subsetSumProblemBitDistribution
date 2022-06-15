@@ -12,10 +12,23 @@ for instance in instances:
         recursions.append(runBB(i))
     data.append(recursions)
 
-print(data)
+# for i in S_0:
+#     print(i)
 
-excelData = pd.DataFrame({"S-3":data[0], "S-2": data[1], "S-1": data[2], "S-0": data[3], "S-N1": data[4], "S-N2": data[5], "S-N3": data[6]})
-excelData.to_excel('recursions_0.xlsx', sheet_name='recursions', index=False)
+# print(data[4])
+for i in S_0:
+    print(i)
+    print(runBB(i))
+[2853, 1230, 758, 499, 232, 68, 43, 19, 14, 6, 3, 1]
+[3081, 1611, 959, 498, 143, 104, 41, 28, 9, 5, 2, 1]
+[2104, 1451, 798, 291, 144, 77, 57, 22, 9, 5, 3, 1]
+# for i in range (0,6):
+#     for j in range(0, i*len(data[i])):
+#         data[i].insert(0, None)
+#         data[i].append(None)
+
+#excelData = pd.DataFrame({"S-3":data[0], "S-2": data[1], "S-1": data[2], "S-0": data[3], "S-N1": data[4], "S-N2": data[5], "S-N3": data[6]})
+#excelData.to_excel('recursions_4.xlsx', sheet_name='recursions', index=False)
 
 
 # list1 = [10,20,30,40]
