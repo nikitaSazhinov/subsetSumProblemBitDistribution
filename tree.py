@@ -8,6 +8,7 @@ class Node:
     def __init__(self, data):
       self.left = None
       self.right = None
+    #   self.parent = None
       self.data = data
 
     # Construct subset tree
@@ -17,63 +18,77 @@ class Node:
         
         # Depth of tree is equal to length of tree
         if counter == len(arr) : return
-
+        # if counter is not 0: self.parent = Node(self.data)
         # Right child = current subset
         self.right = Node(newSubset)
         # Left child = current subtree + next element
         self.left = Node(newSubset + [arr[counter]])
 
         counter += 1
-
+       
         # Recursively construct tree
         self.left.construct(counter,arr)
         self.right.construct(counter, arr)
+       
         
 
     def newDepthFirst(self, root, target, current):
         print("")
 
     def depthFirst(self, root, target):
-        if not root: return
-        if root.left == None or root.right == None: return #hmmm...
-        
+              
         global recursions
         global flag
-
+       
+        if not root or root == None: return
+        
+        if root.left == None or root.right == None: 
+            return #hmmm...
+  
         # Count the recursions
         recursions += 1
 
         # If subset sum is equal to target we found the subset
+        # Idea for solution: if found you not supposed to stop. You supposed to backtrack to parent and go next branch.
         if (sum(root.data) == target):
             flag = True
+            # print("FOUND")
+            # print("Arr: ", root.data)
+            # print("Value: ", sum(root.data))
+            
             return root.data
 
         # #Skip branch if sum higher than target
-        if ((sum(root.data) > target)  & (flag == False)):
+        if ((sum(root.data) > target) ):
+            # print("2 much")
+            root.left = None
+            root.right = None
+            # self.depthFirst(root.right, target)
             return
-
+       
         # DFS
-        if ((root.left is not None) & (root.right is not None)):
-            if ((sum(root.data) < target) & (flag == False)):
-                self.depthFirst(root.left, target)
+        if ((root.left is not None)):
+            if ( (flag == False)):
+                #self.depthFirst(root.left, target)
                 self.depthFirst(root.right, target)
+                # if (sum(root.data) < target):
+                self.depthFirst(root.left, target)
 
+    
+    def bAndB_stack(self, root):
+        # print("root data", root.data)
+        stack = []
 
-   
-    # def bAndB_stack(self, root):
-    #     # print("root data", root.data)
-    #     stack = []
-
-    #     def addToStack(root):
-    #         if (root.left == None or root.right == None):
-    #             return
+        def addToStack(root):
+            if (root.left == None or root.right == None):
+                return
             
-    #         stack.append(root.data)
-    #         addToStack(root.left)
-    #         addToStack(root.right)
-    #     addToStack(root)
-    #     return stack
-    #     # print(stack)
+            stack.append(root.data)
+            addToStack(root.left)
+            addToStack(root.right)
+        addToStack(root)
+        return stack
+        # print(stack)
     
     # def BBForReal(self, root, target):
     #     best = 9999999999999
@@ -91,7 +106,8 @@ def runBB(arr):
     root = Node([])
     root.construct(0, arr)
     target =  sum(arr)/2
-
+    # print("Target: ", target)
+    # global best
     global flag
     global recursions
     # global current
@@ -102,8 +118,8 @@ def runBB(arr):
     flag =False
 
     
-    # s = root.bAndB_stack(root)
-    
+    s = root.bAndB_stack(root)
+    print(s[10])
 
     root.depthFirst(root, target)
 
@@ -111,7 +127,10 @@ def runBB(arr):
     #print(recursions)
     return recursions
 
-#runBB([103, 90, 86, 79, 67, 65, 57, 56, 43, 41, 40, 39])
+testArr = sorted([1,2,6,12,19,35,115,247,305,563,1534,3828], reverse=True)
+#print(testArr)
+print(runBB([2188, 2045, 892, 501, 192, 69, 36, 29, 9, 5, 3, 1]))
+#[1,2,6,12,19,35,115,247,305,563,1534,3828]
 # Use the insert method to add nodes
 
 # root = Node([])
