@@ -1,62 +1,142 @@
-"""
-    Problem:
 
-    Given a vector of ints/floats V, find the number of
-    length 3 subsets which have a sum < X.
+import copy
+from ctypes import c_int16
+from os import curdir
+from select import select
+import sys
+
+class Node:
+    def __init__(self, data):
+      self.left = None
+      self.right = None
+      self.parent = None
+      self.data = data
+      self.state = "created"
+      self.path = []
+
+    def initRoot(self, target):
+        depth = 11 #12?
+        self.state = "active"
+
+        def dfs(root, counter):
+            if not root or root == None: return
+            if counter <= depth: return
+
+            if root.state == "created": #maybe init should be null instead of created
+                root.state = "active"
+            
+            if (sum(root.data) > target): #Best?
+                 root.state = "dead"
+                 root.left = None
+                 root.right = None
+                 dfs(root.parent, target, counter - 1)
+            elif ((root.state == "dead" and root.right.state == "dead") or (counter == depth)):
+                #record path and vals here
+                root.state = "dead"
+                root.left = None
+                root.right = None
+                root.path.pop()
+                dfs(root.parent, target, counter - 1)
+            elif (root.left is None):
+                print("")
+                #create left child
+
+    def createNode(left, parent, path):
+        depth = parent.depth + 1
+        node = Node(
+
+
+
+
+
+            
+        )
+    # Construct subset tree
+    def construct(self, counter, arr):
+        
+        newSubset = copy.deepcopy(self.data)
+        
+        # Depth of tree is equal to length of tree
+        if counter == len(arr) : return
+        # if counter is not 0: self.parent = Node(self.data)
+        # Right child = current subset
+        self.right = Node(newSubset)
+        # Left child = current subtree + next element
+        self.left = Node(newSubset + [arr[counter]])
+
+        counter += 1
+
+        # Recursively construct tree
+        self.left.construct(counter,arr)
+        self.right.construct(counter, arr)
+        
+
+    def newDepthFirst(self, root, target, current):
+        print("")
+
+    def depthFirst(self, root, target):
+              
+        global recursions
+        global flag
+       
+        if not root or root == None: return
+        
+        if root.left == None or root.right == None: 
+            return #hmmm...
+  
+        # Count the recursions
+        recursions += 1
+
+        # If subset sum is equal to target we found the subset
+        # Idea for solution: if found you not supposed to stop. You supposed to backtrack to parent and go next branch.
+        if (sum(root.data) == target):
+            flag = True
+            # print("FOUND")
+            # print("Arr: ", root.data)
+            # print("Value: ", sum(root.data))
+            return root.data
+
+        # #Skip branch if sum higher than target
+        if ((sum(root.data) > target) ):
+            # print("2 much")
+            root.left = None
+            # root.right = None
+            # self.depthFirst(root.right, target)
+            return
+
+        # DFS
+        if ((root.left is not None)):
+            if ( (flag == False)):
+                #self.depthFirst(root.left, target)
+                self.depthFirst(root.right, target)
+                if (sum(root.data) < target):
+                    self.depthFirst(root.left, target)
+
     
-    Assume that V contains no duplicates.
-"""
+def runBB(arr):
+    root = Node([])
+    root.construct(0, arr)
+    target =  sum(arr)/2
+    # print("Target: ", target)
+    global flag
+    global recursions
+    # global current
+    # current = 0
+    # best = 99999999999
 
-def num_subsets(V, X, N):
-    global count
-    count = 0
+    recursions = 0
+    flag =False
 
-    def branch_bound(V, X, N, i=0, s=0, t=0):
-        """
-            Recursive branch-and-bound algorithm for subset sum.
+    
+    # s = root.bAndB_stack(root)
+    
 
-            V, X, N: inputs based on the problem (N is subset size)
-            i: current item index in V
-            s: current sum
-            t: number of items taken from V
+    root.depthFirst(root, target)
 
-            Result is located in count variable defined above.
-        """
-        # Number of items taken is N -> valid subset found
-        # Update overall count and return
-        if t == N:
-            global count
-            count += 1
-            return
+    #print("Solution: ", root.depthFirst(root,target))
+    #print(recursions)
+    return recursions
 
-        # Depth limit for search; abort
-        elif i == len(V):
-            return
-
-        else:
-            # Take the current item *only* if it meets the constraint
-            print(s + V[i])
-            if s + V[i] == X:
-                branch_bound(V, X, N, i+1, s+V[i], t+1)
-
-            # Always try *not taking* the current item
-            branch_bound(V, X, N, i+1, s, t)
-
-    # Run branch-and-bound
-    branch_bound(V, X, N)
-
-    # Return the number of valid subsets found
-    return count
-
-if __name__ == '__main__':
-    # Sample with answer = 6
-    # Subsets: [1,2,3], [1,2,4], [1,2,5], [1,3,4], [1,3,5], [2,3,4]
-    V = [2545, 1026, 664, 402, 227, 66, 56, 22, 11, 4, 2, 1]
-    X = sum(V)/2
-    print('Valid subsets: {0}'.format(num_subsets(V, X, 6)))
-
-    # Larger problem with negative numbers and unsorted
-    # Max subset size is 10
-    # V = [-10, 5, 4, 52, 77, 134, 22, 100, -59, 2, 16, 81, 3, 8, 21]
-    # X = 150
-    # print('Valid subsets: {0}'.format(num_subsets(V, X, 10)))
+testArr = sorted([1,2,6,12,19,35,115,247,305,563,1534,3828], reverse=True)
+#print(testArr)
+print(runBB([2188, 2045, 892, 501, 192, 69, 36, 29, 9, 5, 3, 1]))
