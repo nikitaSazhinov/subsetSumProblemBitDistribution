@@ -30,6 +30,27 @@ class Node:
         self.left.construct(counter,arr)
         self.right.construct(counter, arr)
        
+    def countSolutions(self, root, target):
+        global numSolutions
+        global recursions
+
+        if (recursions > 4096): return
+
+        if not root or root == None: return
+        if (root.left == None) or (root.right == None):
+            return
+
+        self.countSolutions(root.left, target)
+
+        if (sum(root.data) == target):
+            numSolutions += 1
+            print("Found ", root.data)
+            return
+        
+        self.countSolutions(root.right, target)
+        recursions += 1
+
+
         
 
     def newDepthFirst(self, root, target, current):
@@ -39,40 +60,49 @@ class Node:
               
         global recursions
         global flag
+        global best
+        global numSolutions
+        goRightFlag = False
+
+        if (abs(sum(root.data) - target) < best):
+            best = abs(sum(root.data) - target)
+            # print("Current best:", best ,"with data", root.data)
+        # print("Partial sum", sum(root.data), "data", root.data)
+        # print(best)
        
         if not root or root == None: return
         
         if root.left == None or root.right == None: 
             return #hmmm...
   
-        # Count the recursions
-        recursions += 1
-
+        
         # If subset sum is equal to target we found the subset
         # Idea for solution: if found you not supposed to stop. You supposed to backtrack to parent and go next branch.
         if (sum(root.data) == target):
             flag = True
-            # print("FOUND")
-            # print("Arr: ", root.data)
-            # print("Value: ", sum(root.data))
-            
+            numSolutions += 1
+            print("FOUND RESULT ", root.data)
             return root.data
 
-        # #Skip branch if sum higher than target
-        if ((sum(root.data) > target) ):
-            # print("2 much")
+        # # #Skip branch if sum higher than target
+        if ((sum(root.data) > target)):
             root.left = None
             root.right = None
+            # print("PRUNING BRANCH WITH SUM", sum(root.data), "AND DATA", root.data)
             # self.depthFirst(root.right, target)
             return
-       
+
+
         # DFS
-        if ((root.left is not None)):
-            if ( (flag == False)):
-                #self.depthFirst(root.left, target)
+        if ( (flag == False)):
+            if (sum(root.data) < target):
+                self.depthFirst(root.left, target)  
+                # if (sum(root.data) < target):  
                 self.depthFirst(root.right, target)
-                # if (sum(root.data) < target):
-                self.depthFirst(root.left, target)
+                
+
+        # Count the recursions
+        recursions += 1
 
     
     def bAndB_stack(self, root):
@@ -98,6 +128,58 @@ class Node:
     #     while (stack is not []):
     #         cur = stack.pop()
     #         if (sum(cur) < best)
+
+
+ #Auxiliary function to display tree, useful for debugging (works best with len < 6)
+    def display(self):
+        lines, *_ = self._display_aux()
+        for line in lines:
+            print(line)
+
+    def _display_aux(self):
+        """Returns list of strings, width, height, and horizontal coordinate of the root."""
+        # No child.
+        if self.right is None and self.left is None:
+            line = '%s' % self.data
+            width = len(line)
+            height = 1
+            middle = width // 2
+            return [line], width, height, middle
+
+        # Only left child.
+        if self.right is None:
+            lines, n, p, x = self.left._display_aux()
+            s = '%s' % self.data
+            u = len(s)
+            first_line = (x + 1) * ' ' + (n - x - 1) * '_' + s
+            second_line = x * ' ' + '/' + (n - x - 1 + u) * ' '
+            shifted_lines = [line + u * ' ' for line in lines]
+            return [first_line, second_line] + shifted_lines, n + u, p + 2, n + u // 2
+
+        # Only right child.
+        if self.left is None:
+            lines, n, p, x = self.right._display_aux()
+            s = '%s' % self.data
+            u = len(s)
+            first_line = s + x * '_' + (n - x) * ' '
+            second_line = (u + x) * ' ' + '\\' + (n - x - 1) * ' '
+            shifted_lines = [u * ' ' + line for line in lines]
+            return [first_line, second_line] + shifted_lines, n + u, p + 2, u // 2
+
+        # Two children.
+        left, n, p, x = self.left._display_aux()
+        right, m, q, y = self.right._display_aux()
+        s = '%s' % self.data
+        u = len(s)
+        first_line = (x + 1) * ' ' + (n - x - 1) * '_' + s + y * '_' + (m - y) * ' '
+        second_line = x * ' ' + '/' + (n - x - 1 + u + y) * ' ' + '\\' + (m - y - 1) * ' '
+        if p < q:
+            left += [n * ' '] * (q - p)
+        elif q < p:
+            right += [m * ' '] * (p - q)
+        zipped_lines = zip(left, right)
+        lines = [first_line, second_line] + [a + u * ' ' + b for a, b in zipped_lines]
+        return lines, n + m + u, max(p, q) + 2, n + u // 2
      
         
       
@@ -106,30 +188,34 @@ def runBB(arr):
     root = Node([])
     root.construct(0, arr)
     target =  sum(arr)/2
-    # print("Target: ", target)
-    # global best
+    # root.display()
+
     global flag
     global recursions
-    # global current
-    # current = 0
-    # best = 99999999999
+    global best
 
+    best = 99999999999
     recursions = 0
     flag =False
 
-    
-    s = root.bAndB_stack(root)
-    print(s[10])
+    global numSolutions
+    numSolutions = 0
+    # root.depthFirst(root, target)
 
-    root.depthFirst(root, target)
-
-    #print("Solution: ", root.depthFirst(root,target))
-    #print(recursions)
-    return recursions
+    root.countSolutions(root, target)
+    # print("num ", numSolutions)
+    return numSolutions
 
 testArr = sorted([1,2,6,12,19,35,115,247,305,563,1534,3828], reverse=True)
 #print(testArr)
-print(runBB([2188, 2045, 892, 501, 192, 69, 36, 29, 9, 5, 3, 1]))
+arr = [2188, 2045, 892, 501, 192, 69, 36, 29, 9, 5, 3, 1]
+# print("Array: ", arr)
+# print("Full sum: ", sum(arr))
+# print("Target: ",  sum(arr)/2)
+# print("")
+# print("--------------------------------------------------------")
+# print("")
+# print("RECURSIONS: ", runBB(arr))
 #[1,2,6,12,19,35,115,247,305,563,1534,3828]
 # Use the insert method to add nodes
 
@@ -148,53 +234,3 @@ print(runBB([2188, 2045, 892, 501, 192, 69, 36, 29, 9, 5, 3, 1]))
 #print("# of recursions: ",recursions)
 
 
- # Auxiliary function to display tree, useful for debugging (works best with len < 6)
-    # def display(self):
-    #     lines, *_ = self._display_aux()
-    #     for line in lines:
-    #         print(line)
-
-    # def _display_aux(self):
-    #     """Returns list of strings, width, height, and horizontal coordinate of the root."""
-    #     # No child.
-    #     if self.right is None and self.left is None:
-    #         line = '%s' % self.data
-    #         width = len(line)
-    #         height = 1
-    #         middle = width // 2
-    #         return [line], width, height, middle
-
-    #     # Only left child.
-    #     if self.right is None:
-    #         lines, n, p, x = self.left._display_aux()
-    #         s = '%s' % self.data
-    #         u = len(s)
-    #         first_line = (x + 1) * ' ' + (n - x - 1) * '_' + s
-    #         second_line = x * ' ' + '/' + (n - x - 1 + u) * ' '
-    #         shifted_lines = [line + u * ' ' for line in lines]
-    #         return [first_line, second_line] + shifted_lines, n + u, p + 2, n + u // 2
-
-    #     # Only right child.
-    #     if self.left is None:
-    #         lines, n, p, x = self.right._display_aux()
-    #         s = '%s' % self.data
-    #         u = len(s)
-    #         first_line = s + x * '_' + (n - x) * ' '
-    #         second_line = (u + x) * ' ' + '\\' + (n - x - 1) * ' '
-    #         shifted_lines = [u * ' ' + line for line in lines]
-    #         return [first_line, second_line] + shifted_lines, n + u, p + 2, u // 2
-
-    #     # Two children.
-    #     left, n, p, x = self.left._display_aux()
-    #     right, m, q, y = self.right._display_aux()
-    #     s = '%s' % self.data
-    #     u = len(s)
-    #     first_line = (x + 1) * ' ' + (n - x - 1) * '_' + s + y * '_' + (m - y) * ' '
-    #     second_line = x * ' ' + '/' + (n - x - 1 + u + y) * ' ' + '\\' + (m - y - 1) * ' '
-    #     if p < q:
-    #         left += [n * ' '] * (q - p)
-    #     elif q < p:
-    #         right += [m * ' '] * (p - q)
-    #     zipped_lines = zip(left, right)
-    #     lines = [first_line, second_line] + [a + u * ' ' + b for a, b in zipped_lines]
-    #     return lines, n + m + u, max(p, q) + 2, n + u // 2

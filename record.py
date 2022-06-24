@@ -1,28 +1,28 @@
-import pandas as pd
+# import pandas as pd
 from generate import generateData
 from tree import runBB
 
 instances = [S_3, S_2, S_1, S_0, S_N1, S_N2, S_N3] = generateData()
 #print(S_N3)
 
-# data = []
-# for instance in instances:
-#     recursions = []
-#     for i in instance:
-#         recursions.append(runBB(i))
-#     data.append(recursions)
+data = []
+for instance in instances:
+    recursions = []
+    for i in instance:
+        recursions.append(runBB(i))
+    data.append(recursions)
 
-# for i in data:
-#     print(i)
+for i in data:
+    print(i)
 
 # print(data[4])
-rs = []
-for i in S_0:
-    # print(i)
-    # print("Sum: ", sum(i))
+# rs = []
+# for i in S_0:
+#     # print(i)
+#     # print("Sum: ", sum(i))
     
-    rs.append(runBB(i))
-print(rs)
+#     rs.append(runBB(i))
+# print(rs)
 [2853, 1230, 758, 499, 232, 68, 43, 19, 14, 6, 3, 1]
 [3081, 1611, 959, 498, 143, 104, 41, 28, 9, 5, 2, 1]
 [2104, 1451, 798, 291, 144, 77, 57, 22, 9, 5, 3, 1]
