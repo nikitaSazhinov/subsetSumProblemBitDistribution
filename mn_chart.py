@@ -1,4 +1,4 @@
-# import pandas as pd
+import pandas as pd
 from tree import runBB
 import math
 import random
@@ -19,8 +19,8 @@ def generateSingleInstance(template, n):
     instance = random.sample(sample, n)
     return instance
 
-n = 12
-mRange = range(24 , 128)
+n = 16
+mRange = range(32 , 256)
 
 
 def sumsToX(numsum, size):
@@ -41,12 +41,12 @@ def sumsToX(numsum, size):
     return normalisedRounded
 
 
-# sumsToX(16, 24)
+    # sumsToX(16, 24)
 
 def generateTemplates():
     templates = []
     for i in mRange:
-        template = sumsToX(i, 12)
+        template = sumsToX(i, 16)
         templates.append(template)
     return templates
 
@@ -54,30 +54,32 @@ templates = generateTemplates()
 
 for i in templates:
     print(i)
-    print("SUM/MEAN: ", sum(i), sum(i)/12)
+    print("SUM/MEAN: ", sum(i), sum(i)/16)
 
 instances = []
 for i in templates:
-    instances.append(
-        {
-        "instance": generateSingleInstance(i, 12),
-        "template": i,
-        "m/n": (sum(i)/12)/12
-        }
-        )
+    for j in range(0,5):
+        instances.append(
+            {
+            "instance": generateSingleInstance(i, 16),
+            "template": i,
+            "m/n": (sum(i)/16)/16
+            }
+            )
 
-# print(instances[200])
-# print(instances[30])
-# print(runBB(instances[4]))
-alo = []
+
+data = []
 for i in instances:
     print("current instance: ", i["instance"])
-    alo.append(
+    data.append(
         {
-        "recursions": runBB(i["instance"]),
+        "solutions": runBB(i["instance"]),
         "m/n": i["m/n"]
         }
         )
 
-print(alo[)
+print(data)
+
+excelData = pd.DataFrame(data)
+excelData.to_excel('mnchart.xlsx', sheet_name='solutions', index=False)
 

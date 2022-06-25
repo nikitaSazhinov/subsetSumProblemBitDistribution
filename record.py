@@ -1,6 +1,7 @@
 # import pandas as pd
 from generate import generateData
 from tree import runBB
+from bandb_test import bb
 
 instances = [S_3, S_2, S_1, S_0, S_N1, S_N2, S_N3] = generateData()
 #print(S_N3)

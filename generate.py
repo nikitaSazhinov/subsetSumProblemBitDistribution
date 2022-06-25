@@ -10,7 +10,7 @@ def randomBits(word_size):
     for bit in random.sample(range(word_size), word_size):
         number |= 1 << bit
     min = int((number)/2)    
-    return random.randint(min+1, number)  #+1 in min 
+    return random.randint(min, number)  #+1 in min 
     
 
 def generateSingleInstance(template):
@@ -75,7 +75,9 @@ def generateData():
     #print("Greedy: ", greedyPartition(templateInstance[5]))
 
 templateInstance = generateTemplatesInstance()
-# print(templateInstance[3])
+print(templateInstance[0])
+print(templateInstance[6])
+
 
 # for i in templateInstance[3]:
 #     print("b: ", int.bit_length(i))
