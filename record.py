@@ -2,7 +2,6 @@ import pandas as pd
 from generate import generateData
 from tree import runBB
 import numpy as np
-from danalgo import runDaan
 
 
 def generateMSData(index):
@@ -15,7 +14,7 @@ def generateMSData(index):
         for i in instance:
             recursions.append(runBB(i))
         data.append(recursions)
-
+        
     for i in data:
         print(i)
 
@@ -66,6 +65,6 @@ def generateSData(index):
     excelGraph.to_excel(filename_graph, sheet_name='recursions', index=False)
 
 
-for i in range(0,3):
+for i in range(3,6):
     generateMSData(i)
     generateSData(i)

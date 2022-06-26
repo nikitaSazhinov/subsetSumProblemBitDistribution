@@ -51,6 +51,7 @@ class Node:
         global flag
         global best
         global numSolutions
+        global solution
 
         if root.left == None: return 
 
@@ -61,6 +62,7 @@ class Node:
             best = left
             if best == target:
                 # print("Found: ", root.left.data, "with sum", left)
+                solution = root.left.data
                 numSolutions += 1
                 flag = True
         
@@ -97,4 +99,28 @@ def runBB(arr):
 
     return recursions
 
+def runBBWithSolutions(arr):
+    root = Node([])
+    root.construct(0, arr)
+    target =  round(sum(arr)/2)
 
+
+    global flag
+    global recursions
+    global best
+
+    best = 99999999999
+    recursions = 0
+    flag =False
+
+    global solution
+    solution = []
+    
+    global numSolutions
+    numSolutions = 0
+    # print("Arr: ", arr)
+    # print("Target: ", target)
+    root.depthFirst(root, target)
+    # print("Solutions: ", numSolutions)
+    
+    return {"val":best - target, "sol":solution}

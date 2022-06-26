@@ -29,7 +29,7 @@ def generateTemplatesInstance(multiset):
     strictTemplate0 = [7,7,7,7,7,7,7,8,8,8,8,8,8,8]
 
     # Set, 14
-    sstrictTemplate6 = [1,1,2,2,3,4,4,4,5,9,13,17,20,21]
+    sstrictTemplate6 = [1,1,2,2,3,3,3,3,4,9,13,17,20,26]
     sstrictTemplate5 = [1,1,2,2,3,4,5,5,6,9,12,15,18,22]
     sstrictTemplate4 = [1,1,2,4,4,5,6,7,9,10,11,13,15,17]
     sstrictTemplate3 = [1,2,3,4,5,6,7,8,9,10,11,12,13,14] # boundary
@@ -101,4 +101,3 @@ def generateData(multiset):
         S_N3.append(templateInstance[6])
     
     return S_3, S_2, S_1, S_0, S_N1, S_N2, S_N3
-

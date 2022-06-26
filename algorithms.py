@@ -18,7 +18,7 @@ def greedyPartition(input):
     return  abs(sum(p1) - sum(p2)) #p1, p2
 
 
-# Check literature on largest differencing method
+#TODO: CHECK THE CORRECTNESS OF THIS
 def karmarkarKarp(input):
     p1 = []
     p2 = []
