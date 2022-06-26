@@ -15,9 +15,6 @@ def greedyPartition(input):
             else:
                 p1.append(inputCopy[i])
         
-    # print("Sum p1: ", sum(p1))
-    # print("Sum p2: ", sum(p2))
-    # print("Difference: ", abs(sum(p1) - sum(p2)))
     return  abs(sum(p1) - sum(p2)) #p1, p2
 
 

@@ -22,13 +22,12 @@ def generateSingleInstance(template, n):
 n = 16
 mRange = range(32 , 256)
 
-
 def sumsToX(numsum, size):
     # build a list/array of random numbers
     numbers = []
     for _ in range(size):
         numbers.append(random.random())
-    # print(numbers)
+
     # normalise the original list using the sum
     normalised = []
     for n in numbers:
@@ -52,9 +51,6 @@ def generateTemplates():
 
 templates = generateTemplates()
 
-for i in templates:
-    print(i)
-    print("SUM/MEAN: ", sum(i), sum(i)/16)
 
 instances = []
 for i in templates:
@@ -70,7 +66,6 @@ for i in templates:
 
 data = []
 for i in instances:
-    print("current instance: ", i["instance"])
     data.append(
         {
         "solutions": runBB(i["instance"]),

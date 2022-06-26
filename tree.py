@@ -1,8 +1,4 @@
 import copy
-from ctypes import c_int16
-from os import curdir
-from select import select
-import sys
 
 class Node:
     def __init__(self, data):
@@ -43,7 +39,7 @@ class Node:
 
         if (sum(root.data) == target):
             numSolutions += 1
-            print("Found ", root.data)
+            # print("Found ", root.data)
             return
         
         self.countSolutions(root.right, target)
@@ -56,7 +52,7 @@ class Node:
         global best
         global numSolutions
 
-        if root.left == None or root.right == None: return 
+        if root.left == None: return 
 
         left = sum(root.left.data)
         right = sum(root.right.data)
@@ -64,9 +60,9 @@ class Node:
         if (abs(target - left) < abs(target - best)):
             best = left
             if best == target:
+                # print("Found: ", root.left.data, "with sum", left)
                 numSolutions += 1
                 flag = True
-                return
         
         if right < target and not flag:
             self.depthFirst(root.right, target)
@@ -82,8 +78,7 @@ def runBB(arr):
     root = Node([])
     root.construct(0, arr)
     target =  round(sum(arr)/2)
-    summation = sum(arr)
-    odd = summation % 2 != 0
+
 
     global flag
     global recursions
@@ -95,7 +90,10 @@ def runBB(arr):
 
     global numSolutions
     numSolutions = 0
+    # print("Arr: ", arr)
+    # print("Target: ", target)
     root.depthFirst(root, target)
+    # print("Solutions: ", numSolutions)
 
     return recursions
 
