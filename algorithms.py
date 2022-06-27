@@ -20,11 +20,11 @@ def greedyPartition(input):
 
 #TODO: CHECK THE CORRECTNESS OF THIS
 def karmarkarKarp(input):
-    p1 = []
-    p2 = []
+    # p1 = []
+    # p2 = []
     inputCopy = copy.deepcopy(input)
 
-    for i in range(0, 11):
+    for i in range(0, len(input) - 1):
         difference = abs(inputCopy[0] - inputCopy[1])
         inputCopy.pop(0)
         inputCopy.pop(0)
