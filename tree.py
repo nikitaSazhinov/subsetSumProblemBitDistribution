@@ -54,17 +54,17 @@ class Node:
         global solution
 
         if root.left == None: return 
-
         left = sum(root.left.data)
         right = sum(root.right.data)
 
         if (abs(target - left) < abs(target - best)):
             best = left
+            solution = root.left.data
             if best == target:
-                # print("Found: ", root.left.data, "with sum", left)
+                print("Found: ", root.left.data, "with sum", left)
                 solution = root.left.data
                 numSolutions += 1
-                flag = True
+                flag = True  # COMMENT IF YOU WANT ALG TO NOT HALT ON PERFECT SOLUTION
         
         if right < target and not flag:
             self.depthFirst(root.right, target)
@@ -123,4 +123,8 @@ def runBBWithSolutions(arr):
     root.depthFirst(root, target)
     # print("Solutions: ", numSolutions)
     
-    return {"val":best - target, "sol":solution}
+    remaining = list(set(arr) - set(solution))
+    print("sol", solution)
+    val = abs(sum(solution) - sum(remaining))  #abs(sum(solution) - target) #abs(best - sum(remaining))
+
+    return {"val":val, "sol":solution}

@@ -1,6 +1,7 @@
 import random
 from algorithms import karmarkarKarp
 from algorithms import greedyPartition
+from tree import runBBWithSolutions
     
 def randomBits(word_size):
     number = 0
@@ -101,3 +102,10 @@ def generateData(multiset):
         S_N3.append(templateInstance[6])
     
     return S_3, S_2, S_1, S_0, S_N1, S_N2, S_N3
+
+templateInstance = generateTemplatesInstance(multiset = False)
+bb = (runBBWithSolutions(templateInstance[5])["val"])
+gr = greedyPartition(templateInstance[5])
+print("BB: ", bb, "GR: ", gr)
+
+# data for: 1.5

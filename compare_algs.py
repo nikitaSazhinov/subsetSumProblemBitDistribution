@@ -5,7 +5,7 @@ from tree import runBBWithSolutions
 import pandas as pd
 
 
-# MS First
+#MS First
 data = []
 for index in range(0,7):
     bb_res = []
@@ -41,6 +41,7 @@ for index in range(0,7):
         greedy_res.append(greedyPartition(i))
         kk_res.append(karmarkarKarp(i))
     data.append([bb_res, greedy_res, kk_res])
+
 
 
 counter = 0 

@@ -15,7 +15,7 @@ def greedyPartition(input):
             else:
                 p1.append(inputCopy[i])
         
-    return  abs(sum(p1) - sum(p2)) #p1, p2
+    return  abs(sum(p1) - sum(p2)) #abs(sum(p1) - round(sum(input)/2)) #abs(sum(p1) - sum(p2)) #p1, p2
 
 
 #TODO: CHECK THE CORRECTNESS OF THIS
