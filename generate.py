@@ -91,7 +91,7 @@ def generateData(multiset):
     S_N2 = []
     S_N3 = []
 
-    for i in range(0, 50):
+    for i in range(0, 1000):
         templateInstance = generateTemplatesInstance(multiset)
         S_3.append(templateInstance[0])
         S_2.append(templateInstance[1])
@@ -103,9 +103,10 @@ def generateData(multiset):
     
     return S_3, S_2, S_1, S_0, S_N1, S_N2, S_N3
 
-templateInstance = generateTemplatesInstance(multiset = False)
-bb = (runBBWithSolutions(templateInstance[5])["val"])
-gr = greedyPartition(templateInstance[5])
-print("BB: ", bb, "GR: ", gr)
+print("GENERATING INSTANCES")
+# templateInstance = generateTemplatesInstance(multiset = False)
+# bb = (runBBWithSolutions(templateInstance[5])["val"])
+# gr = greedyPartition(templateInstance[5])
+# print("BB: ", bb, "GR: ", gr)
 
 # data for: 1.5
