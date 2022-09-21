@@ -1,0 +1,8 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+authors:
+  - family-names: Sazhinov
+    given-names: Nikita
+title: "Subset sum problem and bit distribution"
+version: 1.00
+date-released: 2022-08-05
