@@ -99,6 +99,7 @@ def runBB(arr):
 
     return recursions
 
+# Branch and bound. Returns difference of sums of two partitions.
 def runBBWithSolutions(arr):
     root = Node([])
     root.construct(0, arr)
@@ -124,7 +125,7 @@ def runBBWithSolutions(arr):
     # print("Solutions: ", numSolutions)
     
     remaining = list(set(arr) - set(solution))
-    print("sol", solution)
+    # print("sol", solution)
     val = abs(sum(solution) - sum(remaining))  #abs(sum(solution) - target) #abs(best - sum(remaining))
 
     return {"val":val, "sol":solution}
